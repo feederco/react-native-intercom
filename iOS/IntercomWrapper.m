@@ -45,7 +45,7 @@ RCT_EXPORT_METHOD(registerIdentifiedUser:(NSDictionary*)options resolver:(RCTPro
 // Available as NativeModules.IntercomWrapper.sendTokenToIntercom
 RCT_EXPORT_METHOD(sendTokenToIntercom:(NSString*)token resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     NSLog(@"sendTokenToIntercom");
-    [Intercom setDeviceToken:deviceToken];
+    [Intercom setDeviceToken:token];
     resolve([NSNull null]);
 }
 
