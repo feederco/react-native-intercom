@@ -43,10 +43,25 @@ RCT_EXPORT_METHOD(registerIdentifiedUser:(NSDictionary*)options resolver:(RCTPro
 };
 
 // Available as NativeModules.IntercomWrapper.sendTokenToIntercom
-RCT_EXPORT_METHOD(sendTokenToIntercom:(NSString*)token resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-    NSLog(@"sendTokenToIntercom");
-    [Intercom setDeviceToken:token];
-    resolve([NSNull null]);
+RCT_EXPORT_METHOD(sendTokenToIntercom:(NSString*)tokenString resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    NSLog(@"sendTokenToIntercom %@", tokenString);
+    
+    tokenString = [tokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSMutableData *token = [[NSMutableData alloc] init];
+    unsigned char whole_byte;
+    char byte_chars[3] = {'\0','\0','\0'};
+    int i;
+    for (i=0; i < [tokenString length]/2; i++) {
+        byte_chars[0] = [tokenString characterAtIndex:i*2];
+        byte_chars[1] = [tokenString characterAtIndex:i*2+1];
+        whole_byte = strtol(byte_chars, NULL, 16);
+        [token appendBytes:&whole_byte length:1];
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [Intercom setDeviceToken:token];
+        resolve([NSNull null]);
+    });
 }
 
 // Available as NativeModules.IntercomWrapper.registerUnidentifiedUser
