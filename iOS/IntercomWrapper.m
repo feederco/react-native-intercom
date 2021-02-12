@@ -45,12 +45,7 @@ RCT_EXPORT_METHOD(registerIdentifiedUser:(NSDictionary*)options resolver:(RCTPro
 // Available as NativeModules.IntercomWrapper.sendTokenToIntercom
 RCT_EXPORT_METHOD(sendTokenToIntercom:(NSString*)token resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     NSLog(@"sendTokenToIntercom");
-
-    // This is a stub. The iOS Intercom client sends the deviceToken instead of FCM token in:
-    // - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    //    [Intercom setDeviceToken:deviceToken];
-    // }
-
+    [Intercom setDeviceToken:deviceToken];
     resolve([NSNull null]);
 }
 
